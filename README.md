@@ -1,16 +1,16 @@
 # GraniteCLI (Transcriber)
 
-A lightweight transcription/translation workflow for long audio and video files using **IBM Granite Speech 4.1-2B** with **vLLM** in Docker.
+A lightweight transcription/translation workflow for long audio and video files using **IBM Granite 4.1-2B** with **vLLM** in Docker.
 
 ## What’s in this repo
 
-- `transcribe.py` – CLI script that runs Granite Speech via `vLLM`, supports:
+- `transcribe.py` – CLI script that runs Granite via `vLLM`, supports:
   - transcription
   - translation to a target language
   - punctuation/capitalization prompting
   - keyword biasing
   - optional chunked processing for long audio
-- `Dockerfile` – container image based on `vllm/vllm-openai`, with required audio dependencies and pre-downloaded model.
+- `Dockerfile` – container image based on `vllm/vllm-openai` (official Docker image name), with required audio dependencies and pre-downloaded model.
 - `TranscribeVideo.ps1` – PowerShell helper that:
   - extracts mono 16kHz WAV audio with `ffmpeg`
   - runs transcription in a transient GPU Docker container
