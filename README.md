@@ -4,7 +4,7 @@ A lightweight transcription/translation workflow for long audio and video files 
 
 ## What’s in this repo
 
-- `transcribe.py` – CLI script that runs Granite Speech via `vllm`, supports:
+- `transcribe.py` – CLI script that runs Granite Speech via `vLLM`, supports:
   - transcription
   - translation to a target language
   - punctuation/capitalization prompting
@@ -81,7 +81,7 @@ docker run --rm --gpus all `
 | Flag | Description | Default |
 |---|---|---|
 | `--punctuation` | Prompt model for punctuation and capitalization | off |
-| `--chunk SECONDS` | Chunk duration in seconds (`0` = no chunking) | `0` |
+| `--chunk SECONDS` | Chunk duration in seconds (`0` = no chunking; for audio > ~25 min, script auto-switches to 30s chunks) | `0` |
 | `--max-tokens N` | Max new tokens per generation | `200` (auto-adjusted if left default) |
 | `--language LANG` | Translate speech into target language | `None` |
 | `--keywords KWS` | Comma-separated keywords for biasing | `None` |
@@ -89,5 +89,5 @@ docker run --rm --gpus all `
 ## Notes
 
 - Audio is normalized to mono and resampled to 16kHz if needed.
-- For very long audio (> ~25 min), chunking is auto-enabled at 30s if chunking is not specified.
+- For very long audio (> ~25 min), if `--chunk` is left at `0`, the script automatically switches to 30s chunks.
 - Containers are run with `--rm` so VRAM and resources are released when finished.
