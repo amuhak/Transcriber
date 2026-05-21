@@ -10,7 +10,7 @@ A lightweight transcription/translation workflow for long audio and video files 
   - punctuation/capitalization prompting
   - keyword biasing
   - optional chunked processing for long audio
-- `Dockerfile` – container image based on `vllm/vllm-openai` (the base image currently used in this repository), with required audio dependencies and pre-downloaded model.
+- `Dockerfile` – container image based on `vllm/vllm-openai`, with required audio dependencies and pre-downloaded model.
 - `TranscribeVideo.ps1` – PowerShell helper that:
   - extracts mono 16kHz WAV audio with `ffmpeg`
   - runs transcription in a transient GPU Docker container
@@ -82,7 +82,7 @@ docker run --rm --gpus all `
 | Flag | Description | Default |
 |---|---|---|
 | `--punctuation` | Prompt model for punctuation and capitalization | off |
-| `--chunk SECONDS` | Chunk duration in seconds (`0` = no chunking; for audio > ~25 min, script auto-switches to 30s chunks) | `0` |
+| `--chunk SECONDS` | Chunk duration in seconds (`0` = process as one segment unless safety auto-chunking is triggered for very long audio) | `0` |
 | `--max-tokens N` | Max new tokens per generation | `200` (auto-adjusted if left default) |
 | `--language LANG` | Translate speech into target language | `None` |
 | `--keywords KWS` | Comma-separated keywords for biasing | `None` |
@@ -90,5 +90,5 @@ docker run --rm --gpus all `
 ## Notes
 
 - Audio is normalized to mono and resampled to 16kHz if needed.
-- For very long audio (> ~25 min), if `--chunk` is left at `0`, the script automatically switches to 30s chunks.
+- For very long audio (> ~25 min), the script applies a safety fallback: if `--chunk` is `0`, it switches to 30s chunks automatically.
 - Containers are run with `--rm` so VRAM and resources are released when finished.
