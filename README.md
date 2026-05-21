@@ -10,7 +10,7 @@ A lightweight transcription/translation workflow for long audio and video files 
   - punctuation/capitalization prompting
   - keyword biasing
   - optional chunked processing for long audio
-- `Dockerfile` – container image based on `vllm/vllm-openai` (official Docker image name), with required audio dependencies and pre-downloaded model.
+- `Dockerfile` – container image based on `vllm/vllm-openai` (the base image currently used in this repository), with required audio dependencies and pre-downloaded model.
 - `TranscribeVideo.ps1` – PowerShell helper that:
   - extracts mono 16kHz WAV audio with `ffmpeg`
   - runs transcription in a transient GPU Docker container
@@ -73,7 +73,8 @@ Transcribe-Video -InputFile "tech_talk.mp4" -Keywords "Kubernetes, Docker, CI/CD
 docker run --rm --gpus all `
     -v "${env:TEMP}:/audio" `
     -v "${PWD}:/output" `
-    granite-cli python3 /app/transcribe.py "/audio/input.wav" "/output/output.txt" --punctuation --language "Spanish" --keywords "Hola"
+    -v "granite_model_cache:/root/.cache/huggingface" `
+    granite-cli python /app/transcribe.py "/audio/input.wav" "/output/output.txt" --punctuation --language "Spanish" --keywords "Hola"
 ```
 
 ## `transcribe.py` CLI options
